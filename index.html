@@ -48,31 +48,25 @@
         }
 
         .profile-img {
-            width: 120px;
+            width: 100%;
+            max-width: 260px; /* Ukuran diperbesar agar proporsional dan gagah */
             height: auto;
-            max-height: 120px;
-            border-radius: 50%;
             object-fit: contain;
-            border: 3px solid var(--primary-green);
-            margin-bottom: 20px;
-            padding: 5px;
-            background-color: var(--white);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+            /* Menggunakan drop-shadow agar bayangan mengikuti bentuk transparan PNG */
+            filter: drop-shadow(0 8px 12px rgba(64, 130, 70, 0.25));
+            transition: transform 0.3s ease;
         }
 
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--primary-green);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .profile-img:hover {
+            transform: scale(1.03); /* Efek interaktif elegan saat logo disentuh/disorot */
         }
 
         p.tagline {
             font-size: 0.95rem;
             color: #666;
             margin-bottom: 30px;
+            font-weight: 600;
         }
 
         .links-container {
@@ -122,7 +116,6 @@
     <div class="container">
         <img src="logoazkiyafarm.png" alt="Logo Azkiya Farm" class="profile-img">
         
-        <h1>Azkiya Farm</h1>
         <p class="tagline">Sayuran Hidroponik Segar Langsung dari Kebun</p>
 
         <div class="links-container">
