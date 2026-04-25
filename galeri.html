@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Azkiya Farm | Hasil Panen Segar</title>
+    
+    <link rel="icon" href="logoazkiyafarm.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #408246; 
+            --light-green: #e9f5e9;
+            --text-dark: #2d3e2e;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-green);
+            color: var(--text-dark);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .header-logo {
+            max-width: 180px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 10px rgba(64, 130, 70, 0.2));
+        }
+
+        h2 {
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .intro-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Grid Galeri */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 200px;
+            background-color: #eee;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background-color: var(--primary-green);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(64, 130, 70, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery-item {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html">
+            <img src="logoazkiyafarm.png" alt="Logo" class="header-logo">
+        </a>
+        
+        <h2>Galeri Kebun Azkiya</h2>
+        <p class="intro-text">
+            Melihat lebih dekat proses budidaya hidroponik kami yang higienis, 
+            bebas pestisida, dan penuh kasih sayang untuk menghasilkan sayuran kualitas premium.
+        </p>
+
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="panen1.jpg" alt="Hasil Panen 1"></div>
+            <div class="gallery-item"><img src="panen2.jpg" alt="Hasil Panen 2"></div>
+            <div class="gallery-item"><img src="kebun1.jpg" alt="Suasana Kebun"></div>
+            <div class="gallery-item"><img src="kebun2.jpg" alt="Perawatan Tanaman"></div>
+            <div class="gallery-item"><img src="akar.jpg" alt="Akar Bersih"></div>
+            <div class="gallery-item"><img src="packing.jpg" alt="Siap Kirim"></div>
+        </div>
+
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Kembali ke Kontak
+        </a>
+
+        <div style="margin-top: 40px; font-size: 0.75rem; color: #999;">
+            © 2026 Azkiya Farm Palangka Raya.
+        </div>
+    </div>
+
+</body>
+</html>
