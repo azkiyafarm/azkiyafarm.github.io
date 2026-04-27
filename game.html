@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7L17QZS86S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7L17QZS86S');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Game | Azkiya Farm</title>
+    
+    <link rel="icon" href="logoazkiyafarm.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #408246; 
+            --light-green: #e9f5e9;
+            --text-dark: #2d3e2e;
+            --white: #ffffff;
+            --pipe-color: #5aa15f;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-green);
+            color: var(--text-dark);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        h2 {
+            color: var(--primary-green);
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        p.instruction {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* Area Tandon & Tanaman */
+        .source-target {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            color: #3b82f6; /* Warna Air */
+        }
+        .target { color: var(--primary-green); }
+
+        /* Grid Game Paralon */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            gap: 5px;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 15px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        /* Desain Pipa Paralon dengan CSS Murni */
+        .pipe-wrap {
+            width: 80px; height: 80px;
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pipe {
+            width: 100%; height: 100%;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .pipe-straight::after {
+            content: ''; position: absolute;
+            top: 0; left: 25px; width: 30px; height: 100%;
+            background-color: var(--pipe-color);
+        }
+
+        .pipe-corner::after {
+            content: ''; position: absolute;
+            top: 25px; left: 25px; width: 55px; height: 55px;
+            border-top: 30px solid var(--pipe-color);
+            border-left: 30px solid var(--pipe-color);
+            border-top-left-radius: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Tombol Kembali */
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 25px; background-color: #94a3b8; color: var(--white);
+            text-decoration: none; border-radius: 50px; font-weight: 600;
+        }
+
+        /* Modal Pop-up Menang */
+        .modal {
+            display: none; position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(255,255,255,0.95);
+            border-radius: 20px; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 10;
+        }
+
+        .promo-box {
+            background-color: #fef3c7; border: 2px dashed #f59e0b;
+            padding: 15px 20px; border-radius: 10px; margin: 20px 0;
+            font-size: 1.2rem; font-weight: 700; color: #d97706;
+            letter-spacing: 2px;
+        }
+
+        .wa-claim {
+            padding: 12px 25px; background-color: var(--primary-green); color: var(--white);
+            text-decoration: none; border-radius: 50px; font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="modal" id="winModal">
+            <h2 style="font-size: 2rem;">🎉 Mantap! 🎉</h2>
+            <p>Air nutrisi mengalir sempurna!</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Ini hadiah untuk keahlian Anda:</p>
+            <div class="promo-box">AZKIYA10</div>
+            <a href="https://wa.me/6285828701780?text=Halo%20Azkiya%20Farm,%20saya%20berhasil%20memecahkan%20kode%20paralon!%20Mau%20klaim%20diskon%20pakai%20kode%20AZKIYA10%20dong." target="_blank" class="wa-claim">
+                <i class="fab fa-whatsapp"></i> Klaim Diskon via WA
+            </a>
+        </div>
+
+        <h2>Teka-teki Paralon</h2>
+        <p class="instruction">Ketuk pipa untuk memutar. Sambungkan air dari Tandon (kiri atas) ke Akar Tanaman (kanan bawah).</p>
+
+        <div class="source-target">
+            <i class="fas fa-tint"></i>
+            <i class="fas fa-seedling target"></i>
+        </div>
+
+        <div class="game-board">
+            <div class="pipe-wrap"><div class="pipe pipe-corner" data-target="180" data-current="90" style="transform: rotate(90deg)"></div></div>
+            <div class="pipe-wrap"><div class="pipe pipe-straight" data-target="90" data-current="0" style="transform: rotate(0deg)"></div></div>
+            <div class="pipe-wrap"><div class="pipe pipe-corner" data-target="270" data-current="0" style="transform: rotate(0deg)"></div></div>
+            
+            <div class="pipe-wrap"><div class="pipe pipe-straight" data-target="0" data-current="90" style="transform: rotate(90deg)"></div></div>
+            <div class="pipe-wrap"><div class="pipe pipe-corner" data-target="90" data-current="180" style="transform: rotate(180deg)"></div></div>
+            <div class="pipe-wrap"><div class="pipe pipe-straight" data-target="0" data-current="90" style="transform: rotate(90deg)"></div></div>
+            
+            <div class="pipe-wrap"><div class="pipe pipe-corner" data-target="90" data-current="270" style="transform: rotate(270deg)"></div></div>
+            <div class="pipe-wrap"><div class="pipe pipe-straight" data-target="90" data-current="0" style="transform: rotate(0deg)"></div></div>
+            <div class="pipe-wrap"><div class="pipe pipe-corner" data-target="0" data-current="90" style="transform: rotate(90deg)"></div></div>
+        </div>
+
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+
+    <script>
+        const pipes = document.querySelectorAll('.pipe');
+        const winModal = document.getElementById('winModal');
+
+        pipes.forEach(pipe => {
+            pipe.addEventListener('click', function() {
+                // Ambil nilai rotasi saat ini, tambah 90 derajat
+                let currentRot = parseInt(this.getAttribute('data-current'));
+                currentRot += 90;
+                
+                // Terapkan ke CSS dan simpan kembali nilainya
+                this.style.transform = `rotate(${currentRot}deg)`;
+                this.setAttribute('data-current', currentRot);
+                
+                checkWinCondition();
+            });
+        });
+
+        function checkWinCondition() {
+            let isWin = true;
+            pipes.forEach(pipe => {
+                let target = parseInt(pipe.getAttribute('data-target'));
+                // Normalisasi putaran (misal 360 = 0)
+                let current = parseInt(pipe.getAttribute('data-current')) % 360;
+                if (current < 0) current += 360; // handle putaran negatif jika ada
+                
+                // Ada trik khusus pipa lurus: 0 derajat sama fungsinya dengan 180 derajat
+                if (pipe.classList.contains('pipe-straight')) {
+                    if (current !== target && current !== (target + 180) % 360) {
+                        isWin = false;
+                    }
+                } else {
+                    if (current !== target) {
+                        isWin = false;
+                    }
+                }
+            });
+
+            if (isWin) {
+                setTimeout(() => {
+                    winModal.style.display = 'flex';
+                }, 400); // Beri sedikit jeda agar pemain lihat pipa sudah tersambung
+            }
+        }
+    </script>
+</body>
+</html>
