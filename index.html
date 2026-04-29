@@ -6,7 +6,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7L17QZS86S');
     </script>
 
@@ -37,11 +36,7 @@
             --white: #ffffff;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -74,17 +69,105 @@
             transition: transform 0.3s ease;
         }
 
-        .profile-img:hover {
-            transform: scale(1.03);
-        }
+        .profile-img:hover { transform: scale(1.03); }
 
         p.tagline {
             font-size: 0.95rem;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-weight: 600;
         }
 
+        /* ========================================== */
+        /* STYLING UNTUK DASHBOARD STOK INLINE        */
+        /* ========================================== */
+        .stok-dashboard {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .stok-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .live-badge {
+            background-color: #fee2e2;
+            color: #ef4444;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .table-responsive { overflow-x: auto; }
+        
+        .stok-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            min-width: 320px; /* Memaksa scroll horizontal jika layar terlalu kecil */
+        }
+
+        .stok-table th {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 8px 5px;
+            text-align: center;
+        }
+
+        .stok-table th:first-child { text-align: left; }
+
+        .stok-table td {
+            padding: 8px 5px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .stok-table td:first-child { text-align: left; font-weight: 600; }
+
+        .stok-ada { color: var(--primary-green); font-weight: 700; }
+        .stok-habis { 
+            color: #ef4444; 
+            font-weight: 700; 
+            background-color: #fee2e2;
+            border-radius: 4px;
+            padding: 2px 4px;
+            display: inline-block;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-green);
+            border-radius: 50%;
+            width: 20px; height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ========================================== */
+        /* STYLING TOMBOL                             */
+        /* ========================================== */
         .links-container {
             display: flex;
             flex-direction: column;
@@ -105,12 +188,13 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            font-size: 0.9rem;
         }
 
         .link-btn i {
             position: absolute;
             left: 25px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
 
         .link-btn:hover {
@@ -132,7 +216,7 @@
 
         .footer {
             margin-top: 35px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #999;
         }
     </style>
@@ -141,8 +225,33 @@
 
     <div class="container">
         <img src="logoazkiyafarm.png" alt="Logo Azkiya Farm" class="profile-img">
-        
         <p class="tagline">Sayuran Hidroponik Segar Langsung dari Kebun</p>
+
+        <div class="stok-dashboard">
+            <div class="stok-title">
+                <span><i class="fas fa-clipboard-list"></i> Ketersediaan Stok</span>
+                <span class="live-badge">LIVE</span>
+            </div>
+            
+            <div id="loading" style="text-align: center; padding: 10px 0; font-size: 0.8rem; color: #666;">
+                <div class="loader"></div> Mengambil data kebun...
+            </div>
+            
+            <div id="stok-table-container" class="table-responsive" style="display:none;">
+                <table class="stok-table">
+                    <thead>
+                        <tr>
+                            <th>Sayur</th>
+                            <th>Farm I</th>
+                            <th>Farm II</th>
+                            <th>Farm III</th>
+                            <th>Farm IV</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stokBody"></tbody>
+                </table>
+            </div>
+        </div>
 
         <div class="links-container">
             <a href="galeri.html" class="link-btn btn-highlight">
@@ -162,20 +271,65 @@
                 <i class="fab fa-tiktok"></i> Tonton di TikTok
             </a>
             <a href="https://maps.app.goo.gl/drZAwkkuuTzVFVYb8" target="_blank" class="link-btn">
-                <i class="fas fa-map-marker-alt"></i> Alamat Azkiya Farm I&III (Maps)
+                <i class="fas fa-map-marker-alt"></i> Alamat Azkiya Farm I&III
             </a>
             <a href="https://maps.app.goo.gl/BxdrrSQwAA4zMv4Y8" target="_blank" class="link-btn">
-                <i class="fas fa-map-marker-alt"></i> Alamat Azkiya Farm II (Maps)
+                <i class="fas fa-map-marker-alt"></i> Alamat Azkiya Farm II
             </a>
             <a href="https://maps.app.goo.gl/jddC6YMnmn9Ai2R2A" target="_blank" class="link-btn">
-                <i class="fas fa-map-marker-alt"></i> Alamat Azkiya Farm IV (Maps)
+                <i class="fas fa-map-marker-alt"></i> Alamat Azkiya Farm IV
             </a>
         </div>
 
         <div class="footer">
-            © 2026 Azkiya Farm.
+            © 2026 Azkiya Farm Palangka Raya.
         </div>
     </div>
 
+    <script>
+        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTEHUI2tqxHi_miuO0QNGuOayZfV4w593eFodd-naRHlKBUX9rBlI5egtqB52Y3pw-XtnBSwQSO9hH-/pub?output=csv';
+
+        async function fetchStok() {
+            try {
+                const response = await fetch(sheetURL + '&cache-buster=' + new Date().getTime());
+                const data = await response.text();
+                
+                const rows = data.split('\n').filter(row => row.trim() !== '');
+                const contentRows = rows.slice(1); 
+                
+                let html = '';
+                contentRows.forEach(row => {
+                    const cols = row.split(',').map(c => c.trim());
+                    if (cols.length >= 5) {
+                        html += `<tr>
+                            <td>${cols[0]}</td>
+                            ${formatCell(cols[1])}
+                            ${formatCell(cols[2])}
+                            ${formatCell(cols[3])}
+                            ${formatCell(cols[4])}
+                        </tr>`;
+                    }
+                });
+
+                document.getElementById('stokBody').innerHTML = html;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('stok-table-container').style.display = 'block';
+            } catch (error) {
+                console.error("Gagal menarik data:", error);
+                document.getElementById('loading').innerHTML = '<span style="color:red">Gagal memuat data stok.</span>';
+            }
+        }
+
+        function formatCell(val) {
+            const lowerVal = val.toLowerCase();
+            if (lowerVal === 'kosong' || lowerVal === '0' || lowerVal === '-') {
+                return `<td><span class="stok-habis">Habis</span></td>`;
+            }
+            return `<td class="stok-ada">${val}</td>`;
+        }
+
+        // Jalankan fungsi saat halaman dimuat
+        fetchStok();
+    </script>
 </body>
 </html>
