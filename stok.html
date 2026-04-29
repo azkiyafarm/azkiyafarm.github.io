@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7L17QZS86S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7L17QZS86S');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok Sayur | Azkiya Farm</title>
+    
+    <link rel="icon" href="logoazkiyafarm.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #408246; 
+            --light-green: #e9f5e9;
+            --text-dark: #2d3e2e;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-green);
+            color: var(--text-dark);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .header-logo { max-width: 150px; margin-bottom: 15px; }
+
+        h2 { color: var(--primary-green); margin-bottom: 5px; }
+
+        .status-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary-green);
+            text-align: left;
+        }
+
+        /* Styling Tabel Responsif */
+        .table-wrapper { overflow-x: auto; margin: 20px 0; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 450px;
+        }
+
+        th {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stok-ada { color: var(--primary-green); font-weight: 700; }
+        .stok-habis { 
+            color: #ef4444; 
+            font-weight: 700; 
+            background-color: #fee2e2;
+            border-radius: 4px;
+            padding: 2px 8px;
+        }
+
+        .loader-container { padding: 40px 0; }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-green);
+            border-radius: 50%;
+            width: 35px; height: 35px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 25px; background-color: var(--primary-green);
+            color: var(--white); text-decoration: none; border-radius: 50px; font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .back-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(64,130,70,0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="logoazkiyafarm.png" alt="Logo" class="header-logo">
+        <h2>Monitoring Stok</h2>
+        <p style="font-size: 0.8rem; color: #666; margin-bottom: 20px;">Data ketersediaan sayur segar hari ini.</p>
+
+        <div id="loading" class="loader-container">
+            <div class="loader"></div>
+            <p style="margin-top:10px; font-size:0.9rem">Menghubungkan ke database kebun...</p>
+        </div>
+        
+        <div id="stok-table-container" style="display:none;">
+            <div class="status-card">
+                <p style="font-size: 0.75rem; margin: 0;">
+                    <i class="fas fa-info-circle"></i> <strong>Tips:</strong> Data di bawah adalah stok siap panen. Hubungi admin untuk booking pesanan.
+                </p>
+            </div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sayuran</th>
+                            <th>Farm I</th>
+                            <th>Farm II</th>
+                            <th>Farm III</th>
+                            <th>Farm IV</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stokBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Menu</a>
+        
+        <div style="margin-top: 30px; font-size: 0.7rem; color: #bbb;">
+            Sistem Monitoring v1.0 • Azkiya Farm Digital
+        </div>
+    </div>
+
+    <script>
+        // Link CSV Google Sheets Arafat
+        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTEHUI2tqxHi_miuO0QNGuOayZfV4w593eFodd-naRHlKBUX9rBlI5egtqB52Y3pw-XtnBSwQSO9hH-/pub?output=csv';
+
+        async function fetchStok() {
+            try {
+                // Menghindari cache agar data selalu fresh
+                const response = await fetch(sheetURL + '&cache-buster=' + new Date().getTime());
+                const data = await response.text();
+                
+                // Parsing CSV sederhana
+                const rows = data.split('\n').filter(row => row.trim() !== '');
+                const contentRows = rows.slice(1); // Potong header
+                
+                let html = '';
+                contentRows.forEach(row => {
+                    const cols = row.split(',').map(c => c.trim());
+                    if (cols.length >= 5) {
+                        html += `<tr>
+                            <td><strong>${cols[0]}</strong></td>
+                            ${formatCell(cols[1])}
+                            ${formatCell(cols[2])}
+                            ${formatCell(cols[3])}
+                            ${formatCell(cols[4])}
+                        </tr>`;
+                    }
+                });
+
+                document.getElementById('stokBody').innerHTML = html;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('stok-table-container').style.display = 'block';
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loading').innerHTML = '<p style="color:red">Gagal sinkronisasi data. Cek koneksi internet atau status spreadsheet.</p>';
+            }
+        }
+
+        // Fungsi pembantu untuk mewarnai teks "Kosong"
+        function formatCell(val) {
+            const lowerVal = val.toLowerCase();
+            if (lowerVal === 'kosong' || lowerVal === '0' || lowerVal === '-') {
+                return `<td class="stok-habis">Kosong</td>`;
+            }
+            return `<td class="stok-ada">${val}</td>`;
+        }
+
+        fetchStok();
+    </script>
+</body>
+</html>
